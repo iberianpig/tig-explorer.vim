@@ -19,8 +19,7 @@ let s:script_path = expand('<sfile>:p:h:h') . '/script/tig_vim.sh '
 function! s:project_root_dir()
   let current_dir = expand('%:p:h')
   let relative_git_dir = finddir('.git', current_dir . ';') 
-  let relative_root_dir = fnamemodify(relative_git_dir, ':h')
-  let root_dir = current_dir . '/' . relative_root_dir
+  let root_dir = fnamemodify(relative_git_dir, ':h')
   if !isdirectory(root_dir)
     return current_dir
   endif
