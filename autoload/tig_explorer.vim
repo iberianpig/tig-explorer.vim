@@ -28,7 +28,7 @@ endfunction
 
 function! tig_explorer#open(path)
   if !executable('tig')
-    echomsg 'You need install tig.'
+    echo 'You need to install tig.'
     return
   endif
   exec 'silent !GIT_EDITOR=' . s:script_path . 'tig ' . a:path
