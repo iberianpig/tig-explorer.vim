@@ -15,9 +15,7 @@ NeoBundle     'iberianpig/tig-explorer.vim'
 ## Usage
 
 ```vim
-nnoremap <silent><Leader>t :TigOpenCurrentFile<CR>
-nnoremap <silent><Leader>T :TigOpenProjectRootDir<CR>
+nnoremap <Leader>t :TigOpenCurrentFile<CR>
+nnoremap <Leader>T :TigOpenProjectRootDir<CR>
+nnoremap <Leader>g :TigGrep<Space>
 ```
-
-# TODO
-* `tig grep` command interface

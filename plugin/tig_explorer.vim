@@ -15,10 +15,13 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 command! TigOpenCurrentFile
-\    call tig_explorer#open_current_file()
+      \  call tig_explorer#open_current_file()
 
 command! TigOpenProjectRootDir
-\    call tig_explorer#open_project_root_dir()
+      \  call tig_explorer#open_project_root_dir()
+
+command! -nargs=1 TigGrep
+      \  call tig_explorer#grep(<q-args>)
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
