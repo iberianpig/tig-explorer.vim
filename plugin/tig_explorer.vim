@@ -20,7 +20,7 @@ command! TigOpenCurrentFile
 command! TigOpenProjectRootDir
       \  call tig_explorer#open_project_root_dir()
 
-command! -nargs=1 TigGrep
+command! -nargs=? TigGrep
       \  call tig_explorer#grep(<q-args>)
 
 let &cpo = s:save_cpo

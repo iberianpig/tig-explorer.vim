@@ -50,8 +50,12 @@ function! tig_explorer#open_project_root_dir() abort
 endfunction
 
 function! tig_explorer#grep(str) abort
-  " escape special character
-  let word = shellescape(a:str, 1)
+  if a:str == ""
+    let word = shellescape(input("Pattern: "), 1)
+  else
+    " escape special character
+    let word = shellescape(a:str, 1)
+  endif
   exec 'silent !GIT_EDITOR=' . s:script_path . 'tig grep ' . word
   if !executable('tig')
     echo 'You need to install tig.'
