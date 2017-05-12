@@ -6,7 +6,7 @@ tig-explorer.vim open [tig](https://github.com/jonas/tig) from vim.
 
 * tig(https://github.com/jonas/tig)
 
-## installation
+## Installation
 
 ```vim
 NeoBundle     'iberianpig/tig-explorer.vim'
