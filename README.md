@@ -2,6 +2,8 @@
 
 tig-explorer.vim open [tig](https://github.com/jonas/tig) from vim.
 
+[![https://gyazo.com/181fef546cced7ca6dc651dff59cd1bf](https://i.gyazo.com/181fef546cced7ca6dc651dff59cd1bf.gif)](https://gyazo.com/181fef546cced7ca6dc651dff59cd1bf)
+
 ## Requirement
 
 * tig(https://github.com/jonas/tig)
