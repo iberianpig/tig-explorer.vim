@@ -23,5 +23,8 @@ command! TigOpenProjectRootDir
 command! -nargs=? TigGrep
       \  call tig_explorer#grep(<q-args>)
 
+command! TigBlame
+      \  call tig_explorer#blame()
+
 let &cpo = s:save_cpo
 unlet s:save_cpo

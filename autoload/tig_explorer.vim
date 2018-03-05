@@ -68,5 +68,19 @@ function! tig_explorer#grep(str) abort
   redraw!
 endfunction
 
+function! tig_explorer#blame() abort
+  if !executable('tig')
+    echo 'You need to install tig.'
+    return
+  endif
+  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig blame +' . line('.') . ' ' . expand('%:p')
+  if filereadable('/tmp/vim_tig_current_file')
+    exec 'edit ' . system('cat /tmp/vim_tig_current_file')
+    echomsg 'edit ' . system('cat /tmp/vim_tig_current_file')
+    call system('rm /tmp/vim_tig_current_file')
+  endif
+  redraw!
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
