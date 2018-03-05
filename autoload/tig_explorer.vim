@@ -56,11 +56,11 @@ function! tig_explorer#grep(str) abort
     " escape special character
     let word = shellescape(a:str, 1)
   endif
-  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig grep ' . word
   if !executable('tig')
     echo 'You need to install tig.'
     return
   endif
+  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig grep ' . word
   if filereadable('/tmp/vim_tig_current_file')
     exec 'edit ' . system('cat /tmp/vim_tig_current_file')
     call system('rm /tmp/vim_tig_current_file')
