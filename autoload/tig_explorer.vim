@@ -26,6 +26,19 @@ function! s:project_root_dir()
   return root_dir
 endfunction
 
+function! tig_explorer#call(str) abort
+  if !executable('tig')
+    echo 'You need to install tig.'
+    return
+  endif
+  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig ' . a:str
+  if filereadable('/tmp/vim_tig_current_file')
+    exec 'edit ' . system('cat /tmp/vim_tig_current_file')
+    call system('rm /tmp/vim_tig_current_file')
+  endif
+  redraw!
+endfunction
+
 function! tig_explorer#open(path)
   if !executable('tig')
     echo 'You need to install tig.'
