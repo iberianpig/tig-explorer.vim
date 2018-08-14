@@ -14,7 +14,9 @@ let g:loaded_tig_explorer = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:script_path = expand('<sfile>:p:h:h') . '/script/tig_vim.sh '
+let s:before_exec_tig  = expand('<sfile>:p:h:h') . '/script/setup_tmp_tigrc.sh'
+let s:callback_at_edit = expand('<sfile>:p:h:h') . '/script/kill_parent_tig.sh '
+let s:tig_command      = 'GIT_EDITOR=' . s:callback_at_edit .'TIGRC_USER=/tmp/.tigrc tig '
 
 function! s:project_root_dir()
   let current_dir = expand('%:p:h')
@@ -26,30 +28,31 @@ function! s:project_root_dir()
   return root_dir
 endfunction
 
-function! tig_explorer#call(str) abort
-  if !executable('tig')
-    echo 'You need to install tig.'
-    return
-  endif
-  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig ' . a:str
-  if filereadable('/tmp/vim_tig_current_file')
-    exec 'edit ' . system('cat /tmp/vim_tig_current_file')
-    call system('rm /tmp/vim_tig_current_file')
+function! s:open_file() abort
+  if filereadable('/tmp/tig_explorer_current_file')
+    exec system('cat /tmp/tig_explorer_current_file')
+    call system('rm /tmp/tig_explorer_current_file')
   endif
   redraw!
 endfunction
 
-function! tig_explorer#open(path)
+function! tig_explorer#call(str) abort
   if !executable('tig')
-    echo 'You need to install tig.'
+    echoerr 'You need to install tig.'
     return
   endif
-  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig ' . a:path
-  if filereadable('/tmp/vim_tig_current_file')
-    exec 'edit ' . system('cat /tmp/vim_tig_current_file')
-    call system('rm /tmp/vim_tig_current_file')
+  exec 'silent !' . s:before_exec_tig
+  exec 'silent !' . s:tig_command . a:str
+  :call s:open_file()
+endfunction
+
+function! tig_explorer#open(path)
+  if !executable('tig')
+    echoerr 'You need to install tig.'
+    return
   endif
-  redraw!
+  exec 'silent !' . s:tig_command . a:path
+  :call s:open_file()
 endfunction
 
 function! tig_explorer#open_current_file() abort
@@ -70,28 +73,20 @@ function! tig_explorer#grep(str) abort
     let word = shellescape(a:str, 1)
   endif
   if !executable('tig')
-    echo 'You need to install tig.'
+    echoerr 'You need to install tig.'
     return
   endif
-  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig grep ' . word
-  if filereadable('/tmp/vim_tig_current_file')
-    exec 'edit ' . system('cat /tmp/vim_tig_current_file')
-    call system('rm /tmp/vim_tig_current_file')
-  endif
-  redraw!
+  exec 'silent !' . s:tig_command . 'grep ' . word
+  :call s:open_file()
 endfunction
 
 function! tig_explorer#blame() abort
   if !executable('tig')
-    echo 'You need to install tig.'
+    echoerr 'You need to install tig.'
     return
   endif
-  exec 'silent !GIT_EDITOR=' . s:script_path . 'tig blame +' . line('.') . ' ' . expand('%:p')
-  if filereadable('/tmp/vim_tig_current_file')
-    exec 'edit ' . system('cat /tmp/vim_tig_current_file')
-    call system('rm /tmp/vim_tig_current_file')
-  endif
-  redraw!
+  exec 'silent !' . s:tig_command . 'blame +' . line('.') . ' ' . expand('%:p')
+  :call s:open_file()
 endfunction
 
 let &cpo = s:save_cpo
