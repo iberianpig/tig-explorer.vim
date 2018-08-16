@@ -23,8 +23,8 @@ Following commands are available on tig launched from tig-explorer
 ```
 e, <Ctrl-o>: edit on existing tab
 <Ctrl-t>   : edit on new tab
-<Ctrl-v>   : edit on with vsplit window
-<Ctrl-s>   : edit on with split window
+<Ctrl-v>   : edit with vsplit window
+<Ctrl-s>   : edit with split window
 ```
 
 
