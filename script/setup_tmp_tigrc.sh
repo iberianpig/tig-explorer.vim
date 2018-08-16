@@ -15,8 +15,8 @@ echo "bind generic <C-o> <sh -c \"echo $edit_cmd +%(lineno) %(file) > $open_file
 edit_cmd='tabedit' # edit on new tab
 echo "bind generic <C-t> <sh -c \"echo $edit_cmd +%(lineno) %(file) > $open_file_info\"" >> /tmp/.tigrc
 
-edit_cmd='vsplit' # edit on existing tab
+edit_cmd='vsplit' # edit with vsplit
 echo "bind generic <C-v> <sh -c \"echo $edit_cmd +%(lineno) %(file) > $open_file_info\"" >> /tmp/.tigrc
 
-edit_cmd='split' # edit on existing tab
+edit_cmd='split' # edit with split
 echo "bind generic <C-s> <sh -c \"echo $edit_cmd +%(lineno) %(file) > $open_file_info\"" >> /tmp/.tigrc

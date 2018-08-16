@@ -15,6 +15,23 @@ NeoBundle     'iberianpig/tig-explorer.vim'
 
 ## Usage
 
+### Available Command
+
+### Keymap on Tig
+
+Following commands are available on tig launched from tig-explorer
+```
+e, <Ctrl-o>: edit on existing tab
+<Ctrl-t>   : edit on new tab
+<Ctrl-v>   : edit on with vsplit window
+<Ctrl-s>   : edit on with split window
+```
+
+
+### Keymap on Vim
+
+Add following script to ~/.vimrc
+
 ```vim
 " open tig with current file
 nnoremap <Leader>t :TigOpenCurrentFile<CR>
@@ -24,6 +41,9 @@ nnoremap <Leader>T :TigOpenProjectRootDir<CR>
 
 " open tig grep
 nnoremap <Leader>g :TigGrep<CR>
+
+" resume from last grep
+nnoremap <Leader>r :TigGrepResume<CR>
 
 " open tig grep with the selected word
 vnoremap <Leader>g y:TigGrep<Space><C-R>"<CR>
