@@ -66,19 +66,25 @@ function! tig_explorer#open_project_root_dir() abort
 endfunction
 
 function! tig_explorer#grep(str) abort
-  if a:str == ""
-    let word = shellescape(input("Pattern: "), 1)
-  else
-    " escape special character
-    let word = shellescape(a:str, 1)
-  endif
   if !executable('tig')
     echoerr 'You need to install tig.'
     return
   endif
+  if a:str == ""
+    let word = input("Pattern: ")
+  else
+    let word = a:str
+  endif
+  let b:last_grep_str = word
+  echo b:last_grep_str
   exec 'silent !' . s:before_exec_tig
-  exec 'silent !' . s:tig_command . 'grep ' . word
+  exec 'silent !' . s:tig_command . 'grep ' . shellescape(word, 1)
   :call s:open_file()
+endfunction
+
+function! tig_explorer#grep_resume() abort
+  let keyword = get(b:, 'last_grep_str', "")
+  :call tig_explorer#grep(keyword)
 endfunction
 
 function! tig_explorer#blame() abort

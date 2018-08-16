@@ -29,5 +29,8 @@ command! -nargs=? TigGrep
 command! TigBlame
       \  call tig_explorer#blame()
 
+command! TigGrepResume
+      \  call tig_explorer#grep_resume()
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
