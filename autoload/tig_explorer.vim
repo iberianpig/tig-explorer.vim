@@ -15,8 +15,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:before_exec_tig  = expand('<sfile>:p:h:h') . '/script/setup_tmp_tigrc.sh'
-let s:callback_at_edit = expand('<sfile>:p:h:h') . '/script/kill_parent_tig.sh '
-let s:tig_command      = 'GIT_EDITOR=' . s:callback_at_edit .'TIGRC_USER=/tmp/.tigrc tig '
+let s:tig_command      = 'TIGRC_USER=/tmp/.tigrc tig '
 
 function! s:project_root_dir()
   let current_dir = expand('%:p:h')
@@ -51,6 +50,7 @@ function! tig_explorer#open(path)
     echoerr 'You need to install tig.'
     return
   endif
+  exec 'silent !' . s:before_exec_tig
   exec 'silent !' . s:tig_command . a:path
   :call s:open_file()
 endfunction
@@ -76,6 +76,7 @@ function! tig_explorer#grep(str) abort
     echoerr 'You need to install tig.'
     return
   endif
+  exec 'silent !' . s:before_exec_tig
   exec 'silent !' . s:tig_command . 'grep ' . word
   :call s:open_file()
 endfunction
@@ -85,6 +86,7 @@ function! tig_explorer#blame() abort
     echoerr 'You need to install tig.'
     return
   endif
+  exec 'silent !' . s:before_exec_tig
   exec 'silent !' . s:tig_command . 'blame +' . line('.') . ' ' . expand('%:p')
   :call s:open_file()
 endfunction
