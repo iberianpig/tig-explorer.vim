@@ -75,15 +75,14 @@ function! tig_explorer#grep(str) abort
   else
     let word = a:str
   endif
-  let b:last_grep_str = word
-  echo b:last_grep_str
+  let g:tig_explorer_last_grep_keyword = word
   exec 'silent !' . s:before_exec_tig
   exec 'silent !' . s:tig_command . 'grep ' . shellescape(word, 1)
   :call s:open_file()
 endfunction
 
 function! tig_explorer#grep_resume() abort
-  let keyword = get(b:, 'last_grep_str', "")
+  let keyword = get(g:, 'tig_explorer_last_grep_keyword', "")
   :call tig_explorer#grep(keyword)
 endfunction
 

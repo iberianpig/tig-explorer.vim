@@ -17,7 +17,7 @@ NeoBundle     'iberianpig/tig-explorer.vim'
 
 ### Available Command
 
-### Keymap on Tig
+#### Keymap on Tig
 
 Following commands are available on tig launched from tig-explorer
 ```
@@ -28,7 +28,7 @@ e, <Ctrl-o>: edit on existing tab
 ```
 
 
-### Keymap on Vim
+#### Keymap on Vim
 
 Add following script to ~/.vimrc
 
