@@ -14,8 +14,18 @@ let g:loaded_tig_explorer = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
+if !exists('g:tig_explorer_orig_tigrc')
+  " TODO: " set '$XDG_CONFIG_HOME/tig/config, ~/.config/tig/config, ~/.tigrc', /etc/tigrc
+  let g:tig_explorer_orig_tigrc='~/.tigrc'
+endif
+
+let s:tmp_tigrc = tempname()
+let s:path_file = tempname()
 let s:before_exec_tig  = expand('<sfile>:p:h:h') . '/script/setup_tmp_tigrc.sh'
-let s:tig_command      = 'TIGRC_USER=/tmp/.tigrc tig '
+      \ . ' ' . g:tig_explorer_orig_tigrc
+      \ . ' ' . s:tmp_tigrc
+      \ . ' ' . s:path_file
+let s:tig_command = 'TIGRC_USER=' . s:tmp_tigrc . ' tig '
 
 function! s:project_root_dir()
   let current_dir = expand('%:p:h')
@@ -28,9 +38,9 @@ function! s:project_root_dir()
 endfunction
 
 function! s:open_file() abort
-  if filereadable('/tmp/tig_explorer_current_file')
-    exec system('cat /tmp/tig_explorer_current_file')
-    call system('rm /tmp/tig_explorer_current_file')
+  if filereadable(s:path_file)
+    exec system('cat ' . s:path_file)
+    call system('rm ' . s:path_file)
   endif
   redraw!
 endfunction
