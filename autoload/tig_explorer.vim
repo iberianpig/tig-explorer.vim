@@ -15,9 +15,6 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 function! s:set_orig_tigrc(path) abort
-  " if exists('s:orig_tigrc')
-  "   return 1 "skip
-  " endif
   if filereadable(expand(a:path))
     let s:orig_tigrc=a:path
     return 1 "true
