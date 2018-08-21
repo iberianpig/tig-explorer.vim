@@ -1,6 +1,10 @@
 # tig-explorer.vim
 
-Vim plugin to use [tig](https://github.com/jonas/tig) as a git client. Seamless switching between vim and tig with opening in the same buffer.
+Vim plugin to use [Tig](https://github.com/jonas/tig) as a git client.
+* Seamless switching between Vim and Tig with opening in the same buffer.
+* Open files in tabs or in vertically/horizontal split windows on Vim from Tig
+* Dynamically defining keymaps on Tig
+
 [![https://gyazo.com/181fef546cced7ca6dc651dff59cd1bf](https://i.gyazo.com/181fef546cced7ca6dc651dff59cd1bf.gif)](https://gyazo.com/181fef546cced7ca6dc651dff59cd1bf)
 
 ## Requirement
