@@ -11,8 +11,8 @@ if exists('g:loaded_tig_explorer')
 endif
 let g:loaded_tig_explorer = 1
 
-let s:save_cpo = &cpo
-set cpo&vim
+let s:save_cpo = &cpoptions
+set cpoptions&vim
 
 command! -nargs=? Tig
       \  call tig_explorer#call(<q-args>)
@@ -32,5 +32,5 @@ command! TigBlame
 command! TigGrepResume
       \  call tig_explorer#grep_resume()
 
-let &cpo = s:save_cpo
+let &cpoptions = s:save_cpo
 unlet s:save_cpo

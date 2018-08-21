@@ -11,25 +11,46 @@ if !exists('g:loaded_tig_explorer')
 endif
 let g:loaded_tig_explorer = 1
 
-let s:save_cpo = &cpo
-set cpo&vim
+let s:save_cpo = &cpoptions
+set cpoptions&vim
 
-if !exists('g:tig_explorer_orig_tigrc')
-  " TODO: " set '$XDG_CONFIG_HOME/tig/config, ~/.config/tig/config, ~/.tigrc', /etc/tigrc
-  let g:tig_explorer_orig_tigrc='~/.tigrc'
+function! s:set_orig_tigrc(path) abort
+  " if exists('s:orig_tigrc')
+  "   return 1 "skip
+  " endif
+  if filereadable(expand(a:path))
+    let s:orig_tigrc=a:path
+    return 1 "true
+  endif
+  return 0 "fail
+endfunction
+
+if exists('g:tig_explorer_orig_tigrc')
+  let result = s:set_orig_tigrc(g:tig_explorer_orig_tigrc)
+else
+  let result = s:set_orig_tigrc('$XDG_CONFIG_HOME/tig/config') ||
+        \ s:set_orig_tigrc('~/.config/tig/config') ||
+        \ s:set_orig_tigrc('~/.tigrc') ||
+        \ s:set_orig_tigrc('/etc/tigrc')
+endif
+if result
+  echomsg('tig_explorer loaded tigrc from: ' . s:orig_tigrc)
+else
+  echoerr 'tigrc is not found'
+  let s:orig_tigrc = tempname() "workaround
 endif
 
 let s:tmp_tigrc = tempname()
 let s:path_file = tempname()
 let s:before_exec_tig  = expand('<sfile>:p:h:h') . '/script/setup_tmp_tigrc.sh'
-      \ . ' ' . g:tig_explorer_orig_tigrc
+      \ . ' ' . s:orig_tigrc
       \ . ' ' . s:tmp_tigrc
       \ . ' ' . s:path_file
 let s:tig_command = 'TIGRC_USER=' . s:tmp_tigrc . ' tig '
 
 function! s:project_root_dir()
   let current_dir = expand('%:p:h')
-  let relative_git_dir = finddir('.git', current_dir . ';') 
+  let relative_git_dir = finddir('.git', current_dir . ';')
   let root_dir = fnamemodify(relative_git_dir, ':h')
   if !isdirectory(root_dir)
     return current_dir
@@ -80,8 +101,8 @@ function! tig_explorer#grep(str) abort
     echoerr 'You need to install tig.'
     return
   endif
-  if a:str == ""
-    let word = input("Pattern: ")
+  if a:str ==# ''
+    let word = input('Pattern: ')
   else
     let word = a:str
   endif
@@ -92,7 +113,7 @@ function! tig_explorer#grep(str) abort
 endfunction
 
 function! tig_explorer#grep_resume() abort
-  let keyword = get(g:, 'tig_explorer_last_grep_keyword', "")
+  let keyword = get(g:, 'tig_explorer_last_grep_keyword', '')
   :call tig_explorer#grep(keyword)
 endfunction
 
@@ -106,5 +127,5 @@ function! tig_explorer#blame() abort
   :call s:open_file()
 endfunction
 
-let &cpo = s:save_cpo
+let &cpoptions = s:save_cpo
 unlet s:save_cpo
