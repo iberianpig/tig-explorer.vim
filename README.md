@@ -14,8 +14,23 @@ Vim plugin to use [Tig](https://github.com/jonas/tig) as a git client.
 ## Installation
 
 ```vim
-NeoBundle     'iberianpig/tig-explorer.vim'
+" vim-plug
+Plug 'iberianpig/tig-explorer.vim'
+
+" NeoBundle
+NeoBundle 'iberianpig/tig-explorer.vim'
 ```
+
+**NOTE: If you use neovim, you have to add the dependency to the plugin bclose.vim:**
+
+```vim
+" vim-plug
+Plug 'rbgrouleff/bclose.vim'
+
+" NeoBundle
+NeoBundle 'rbgrouleff/bclose.vim'
+```
+
 
 ## Usage
 

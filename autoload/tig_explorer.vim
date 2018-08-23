@@ -90,22 +90,41 @@ endfunction
 function! s:exec_tig_command(tig_args) abort
   if !executable('tig')
     echoerr 'You need to install tig.'
-    return 0
+    return
   endif
 
-  exec 'silent !' . s:before_exec_tig
-
   let command = s:tig_prefix  . 'tig' . ' ' . a:tig_args
-  exec 'silent !' . command
-  :call s:open_file()
+  exec 'silent !' . s:before_exec_tig
+  if has('nvim')
+    echomsg 'nvim'
+
+    let tigCallback = { 'name': 'tig' }
+    function! tigCallback.on_exit(job_id, code, event)
+      if a:code == 0
+        silent! Bclose!
+      endif
+      try
+        call s:open_file()
+      endtry
+    endfunction
+    enew
+    call termopen(command, tigCallback)
+    startinsert
+  else
+    exec 'silent !' . command
+    call s:open_file()
+  endif
+  redraw!
 endfunction
 
 function! s:open_file() abort
+
   if filereadable(s:path_file)
-    exec system('cat ' . s:path_file)
-    call system('rm ' . s:path_file)
+    for f in readfile(s:path_file)
+      exec f
+    endfor
+    call delete(s:path_file)
   endif
-  redraw!
 endfunction
 
 function! s:project_root_dir()
@@ -123,7 +142,7 @@ endfunction
 " NOTE: '<sfile>' must be called top level
 let s:plugin_root=expand('<sfile>:p:h:h')
 
-:call s:initialize()
+call s:initialize()
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
