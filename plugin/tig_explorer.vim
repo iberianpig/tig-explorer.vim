@@ -15,7 +15,7 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 command! -nargs=? Tig
-      \  call tig_explorer#call(<q-args>)
+      \  call tig_explorer#open(<q-args>)
 
 command! TigOpenCurrentFile
       \  call tig_explorer#open_current_file()

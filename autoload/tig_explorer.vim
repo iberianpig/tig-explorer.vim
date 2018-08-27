@@ -16,18 +16,18 @@ set cpoptions&vim
 
 " Public 
 
-function! tig_explorer#call(str) abort
+function! tig_explorer#open(str) abort
   :call s:exec_tig_command(a:str)
 endfunction
 
 function! tig_explorer#open_current_file() abort
   let current_path = expand('%:p')
-  :call tig_explorer#call(current_path)
+  :call tig_explorer#open(current_path)
 endfunction
 
 function! tig_explorer#open_project_root_dir() abort
   let root_dir = s:project_root_dir()
-  :call tig_explorer#call(root_dir)
+  :call tig_explorer#open(root_dir)
 endfunction
 
 function! tig_explorer#grep(str) abort
