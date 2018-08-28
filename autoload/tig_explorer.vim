@@ -96,8 +96,6 @@ function! s:exec_tig_command(tig_args) abort
   let command = s:tig_prefix  . 'tig' . ' ' . a:tig_args
   exec 'silent !' . s:before_exec_tig
   if has('nvim')
-    echomsg 'nvim'
-
     let tigCallback = { 'name': 'tig' }
     function! tigCallback.on_exit(job_id, code, event)
       if a:code == 0
@@ -118,7 +116,6 @@ function! s:exec_tig_command(tig_args) abort
 endfunction
 
 function! s:open_file() abort
-
   if filereadable(s:path_file)
     for f in readfile(s:path_file)
       exec f
@@ -128,9 +125,9 @@ function! s:open_file() abort
 endfunction
 
 function! s:project_root_dir()
-  let current_dir = expand('%:p:h')
+  let current_dir      = expand('%:p:h')
   let relative_git_dir = finddir('.git', current_dir . ';')
-  let root_dir = fnamemodify(relative_git_dir, ':h')
+  let root_dir         = fnamemodify(relative_git_dir, ':h')
   if !isdirectory(root_dir)
     return current_dir
   endif
