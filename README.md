@@ -74,3 +74,7 @@ nnoremap <Leader>cg :<C-u>:TigGrep<Space><C-R><C-W><CR>
 " open tig blame with current file
 nnoremap <Leader>b :TigBlame<CR>
 ```
+
+## Support
+
+[![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/iberianpig)
