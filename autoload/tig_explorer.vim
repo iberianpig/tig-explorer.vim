@@ -36,8 +36,17 @@ function! tig_explorer#grep(str) abort
   else
     let word = a:str
   endif
+
   let g:tig_explorer_last_grep_keyword = word
-  :call s:exec_tig_command('grep ' . shellescape(word, 1))
+
+  let args = s:shellwords(word)
+  let escaped_word = ''
+
+  for arg in args
+    let escaped_word = join([escaped_word, shellescape(arg, 1)], ' ')
+  endfor
+
+  :call s:exec_tig_command('grep ' . escaped_word)
 endfunction
 
 function! tig_explorer#grep_resume() abort
@@ -109,6 +118,7 @@ function! s:exec_tig_command(tig_args) abort
     call termopen(command, tigCallback)
     startinsert
   else
+    echomsg command
     exec 'silent !' . command
     call s:open_file()
   endif
@@ -132,6 +142,13 @@ function! s:project_root_dir()
     return current_dir
   endif
   return root_dir
+endfunction
+
+function! s:shellwords(str) abort "make list by splitting the string by whitespace
+  let words = split(a:str, '\%(\([^ \t\''"]\+\)\|''\([^\'']*\)''\|"\(\%([^\"\\]\|\\.\)*\)"\)\zs\s*\ze')
+  let words = map(words, 'substitute(v:val, ''\\\([\\ ]\)'', ''\1'', "g")')
+  let words = map(words, 'matchstr(v:val, ''^\%\("\zs\(.*\)\ze"\|''''\zs\(.*\)\ze''''\|.*\)$'')')
+  return words
 endfunction
 
 " Initialize
