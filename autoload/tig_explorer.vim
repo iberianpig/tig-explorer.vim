@@ -97,6 +97,12 @@ function! s:initialize() abort
 endfunction
 
 function! s:exec_tig_command(tig_args) abort
+  let original_dir = expand('%:p:h')
+  let root_dir = s:project_root_dir()
+  " NOTE: It MUST execute tig command from project root
+  " TigBlame or Edit are broken if execute from a relative path
+  execute 'lcd ' . fnamemodify(root_dir, ':p')
+
   if !executable('tig')
     echoerr 'You need to install tig.'
     return
@@ -122,6 +128,8 @@ function! s:exec_tig_command(tig_args) abort
     exec 'silent !' . command
     call s:open_file()
   endif
+  " NOTE: Back to original_dir
+  execute 'lcd ' . fnamemodify(original_dir, ':p')
   redraw!
 endfunction
 
@@ -136,12 +144,16 @@ endfunction
 
 function! s:project_root_dir()
   let current_dir      = expand('%:p:h')
-  let relative_git_dir = finddir('.git', current_dir . ';')
-  let root_dir         = fnamemodify(relative_git_dir, ':h')
+  let root_dir = s:search_root_dir('.git', current_dir)
   if !isdirectory(root_dir)
     return current_dir
   endif
   return root_dir
+endfunction
+
+function! s:search_root_dir(root_file, target_dir)
+  let root_file_path = finddir(a:root_file, a:target_dir . ';')
+  return fnamemodify(root_file_path, ':h')
 endfunction
 
 function! s:shellwords(str) abort "make list by splitting the string by whitespace
