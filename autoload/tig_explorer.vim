@@ -97,10 +97,11 @@ function! s:initialize() abort
 endfunction
 
 function! s:exec_tig_command(tig_args) abort
-  let original_dir = expand('%:p:h')
+  let current_dir = getcwd()
   let root_dir = s:project_root_dir()
   " NOTE: It MUST execute tig command from project root
   " TigBlame or Edit are broken if execute from a relative path
+  echomsg 'lcd ' . fnamemodify(root_dir, ':p')
   execute 'lcd ' . fnamemodify(root_dir, ':p')
 
   if !executable('tig')
@@ -128,8 +129,8 @@ function! s:exec_tig_command(tig_args) abort
     exec 'silent !' . command
     call s:open_file()
   endif
-  " NOTE: Back to original_dir
-  execute 'lcd ' . fnamemodify(original_dir, ':p')
+  " NOTE: Back to current_dir
+  execute 'lcd ' . fnamemodify(current_dir, ':p')
   redraw!
 endfunction
 
@@ -143,10 +144,10 @@ function! s:open_file() abort
 endfunction
 
 function! s:project_root_dir()
-  let current_dir      = expand('%:p:h')
-  let root_dir = s:search_root_dir('.git', current_dir)
+  let current_file_dir      = expand('%:p:h')
+  let root_dir = s:search_root_dir('.git', current_file_dir)
   if !isdirectory(root_dir)
-    return current_dir
+    return current_file_dir
   endif
   return root_dir
 endfunction
