@@ -26,7 +26,12 @@ function! tig_explorer#open_current_file() abort
 endfunction
 
 function! tig_explorer#open_project_root_dir() abort
-  let root_dir = s:project_root_dir()
+  try
+    let root_dir = s:project_root_dir()
+  catch
+    echomsg 'tig-explorer.vim: ' . v:exception
+    return
+  endtry
   :call tig_explorer#open(root_dir)
 endfunction
 
@@ -78,9 +83,7 @@ function! s:initialize() abort
           \ s:set_orig_tigrc('~/.tigrc') ||
           \ s:set_orig_tigrc('/etc/tigrc')
   endif
-  if result
-    echomsg('tig_explorer loaded tigrc from: ' . s:orig_tigrc)
-  else
+  if !result
     echoerr 'tigrc is not found'
     let s:orig_tigrc = tempname() "workaround
   endif
@@ -98,10 +101,14 @@ endfunction
 
 function! s:exec_tig_command(tig_args) abort
   let current_dir = getcwd()
-  let root_dir = s:project_root_dir()
+  try
+    let root_dir = s:project_root_dir()
+  catch
+    echomsg 'tig-explorer.vim: ' . v:exception
+    return
+  endtry
   " NOTE: It MUST execute tig command from project root
   " TigBlame or Edit are broken if execute from a relative path
-  echomsg 'lcd ' . fnamemodify(root_dir, ':p')
   execute 'lcd ' . fnamemodify(root_dir, ':p')
 
   if !executable('tig')
@@ -125,7 +132,6 @@ function! s:exec_tig_command(tig_args) abort
     call termopen(command, tigCallback)
     startinsert
   else
-    echomsg command
     exec 'silent !' . command
     call s:open_file()
   endif
@@ -143,18 +149,20 @@ function! s:open_file() abort
   endif
 endfunction
 
-function! s:project_root_dir()
-  let current_file_dir      = expand('%:p:h')
-  let root_dir = s:search_root_dir('.git', current_file_dir)
+function! s:project_root_dir() abort
+  let current_file_dir = expand('%:p:h')
+  let git_dir = finddir('.git', expand('%:p:h') . ';')
+
+  if git_dir ==# ''
+    throw 'Not a git repository'
+  endif
+
+  let root_dir = fnamemodify(git_dir, ':h')
+
   if !isdirectory(root_dir)
     return current_file_dir
   endif
   return root_dir
-endfunction
-
-function! s:search_root_dir(root_file, target_dir)
-  let root_file_path = finddir(a:root_file, a:target_dir . ';')
-  return fnamemodify(root_file_path, ':h')
 endfunction
 
 function! s:shellwords(str) abort "make list by splitting the string by whitespace
