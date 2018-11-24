@@ -29,7 +29,7 @@ function! tig_explorer#open_project_root_dir() abort
   try
     let root_dir = s:project_root_dir()
   catch
-    echomsg 'tig-explorer.vim: ' . v:exception
+    echoerr 'tig-explorer.vim: ' . v:exception
     return
   endtry
   :call tig_explorer#open(root_dir)
@@ -66,7 +66,16 @@ endfunction
 
 " Private 
 
+function! s:tig_available() abort
+  if !executable('tig')
+    echoerr 'You need to install tig.'
+    return 0
+  endif
+  return 1
+endfunction
+
 function! s:initialize() abort
+
   function! s:set_orig_tigrc(path) abort
     if filereadable(expand(a:path))
       let s:orig_tigrc=a:path
@@ -84,8 +93,9 @@ function! s:initialize() abort
           \ s:set_orig_tigrc('/etc/tigrc')
   endif
   if !result
-    echoerr 'tigrc is not found'
+    echomsg  'tig-explorer.vim: tigrc is not found'
     let s:orig_tigrc = tempname() "workaround
+    exec 'silent ! touch ' . s:orig_tigrc
   endif
 
   let s:tmp_tigrc = tempname()
@@ -100,21 +110,20 @@ function! s:initialize() abort
 endfunction
 
 function! s:exec_tig_command(tig_args) abort
+  if !s:tig_available()
+    return
+  endif
+
   let current_dir = getcwd()
   try
     let root_dir = s:project_root_dir()
   catch
-    echomsg 'tig-explorer.vim: ' . v:exception
+    echoerr 'tig-explorer.vim: ' . v:exception
     return
   endtry
   " NOTE: It MUST execute tig command from project root
   " TigBlame or Edit are broken if execute from a relative path
   execute 'lcd ' . fnamemodify(root_dir, ':p')
-
-  if !executable('tig')
-    echoerr 'You need to install tig.'
-    return
-  endif
 
   let command = s:tig_prefix  . 'tig' . ' ' . a:tig_args
   exec 'silent !' . s:before_exec_tig
