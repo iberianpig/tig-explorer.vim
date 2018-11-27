@@ -22,7 +22,7 @@ Plug 'iberianpig/tig-explorer.vim'
 NeoBundle 'iberianpig/tig-explorer.vim'
 ```
 
-**NOTE: If you use neovim, you have to add the dependency to the plugin bclose.vim:**
+**NOTE: If you use Neovim, you have to add the dependency to the plugin bclose.vim:**
 
 ```vim
 " vim-plug
@@ -54,10 +54,10 @@ Add following script to ~/.vimrc
 
 ```vim
 " open tig with current file
-nnoremap <Leader>t :TigOpenCurrentFile<CR>
+nnoremap <Leader>T :TigOpenCurrentFile<CR>
 
 " open tig with Project root path
-nnoremap <Leader>T :TigOpenProjectRootDir<CR>
+nnoremap <Leader>t :TigOpenProjectRootDir<CR>
 
 " open tig grep
 nnoremap <Leader>g :TigGrep<CR>
