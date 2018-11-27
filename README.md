@@ -47,6 +47,14 @@ e, <Ctrl-o>: edit on existing tab
 <Ctrl-s>   : edit with split window
 ```
 
+##### Customize Keymap on Tig
+Following keymap is defined as defaut
+```vim
+let g:tig_explorer_keymap_edit    = '<C-o>'
+let g:tig_explorer_keymap_tabedit = '<C-t>'
+let g:tig_explorer_keymap_split   = '<C-s>'
+let g:tig_explorer_keymap_vsplit  = '<C-v>'
+```
 
 #### Keymap on Vim
 

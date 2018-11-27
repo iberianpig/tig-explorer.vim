@@ -109,10 +109,20 @@ function! s:initialize() abort
   let s:tmp_tigrc = tempname()
   let s:path_file = tempname()
 
+  let s:keymap_edit    = get(g:, 'tig_explorer_keymap_edit',    '<C-o>')
+  let s:keymap_tabedit = get(g:, 'tig_explorer_keymap_tabedit', '<C-t>')
+  let s:keymap_split   = get(g:, 'tig_explorer_keymap_split',   '<C-s>')
+  let s:keymap_vsplit  = get(g:, 'tig_explorer_keymap_vsplit',  '<C-v>')
+
+
   let s:before_exec_tig  = s:plugin_root . '/script/setup_tmp_tigrc.sh'
         \ . ' ' . s:orig_tigrc
         \ . ' ' . s:tmp_tigrc
         \ . ' ' . s:path_file
+        \ . ' "' . s:keymap_edit    . '"'
+        \ . ' "' . s:keymap_tabedit . '"'
+        \ . ' "' . s:keymap_split   . '"'
+        \ . ' "' . s:keymap_vsplit  . '"'
 
   let s:tig_prefix = 'TIGRC_USER=' . s:tmp_tigrc . ' '
 endfunction
