@@ -37,9 +37,16 @@ endfunction
 
 function! tig_explorer#grep(str) abort
   if a:str ==# ''
-    let word = input('Pattern: ')
+    let word = s:input('Pattern: ')
   else
     let word = a:str
+  endif
+
+  " if canceled
+  if word ==# '0'
+    return
+  elseif word ==# '-1'
+    return
   endif
 
   let g:tig_explorer_last_grep_keyword = word
@@ -62,6 +69,7 @@ endfunction
 function! tig_explorer#blame() abort
   call s:exec_tig_command('blame +' . line('.') . ' ' . expand('%:p'))
 endfunction
+
 
 
 " Private 
@@ -179,6 +187,23 @@ function! s:shellwords(str) abort "make list by splitting the string by whitespa
   let words = map(words, 'substitute(v:val, ''\\\([\\ ]\)'', ''\1'', "g")')
   let words = map(words, 'matchstr(v:val, ''^\%\("\zs\(.*\)\ze"\|''''\zs\(.*\)\ze''''\|.*\)$'')')
   return words
+endfunction
+
+
+" return 0 (<ESC>) or -1 (<Ctrl-c>)
+function! s:input(...) abort
+  new
+  cnoremap <buffer> <Esc> __CANCELED__<CR>
+  try
+    let input = call('input', a:000)
+    let input = input =~# '__CANCELED__$' ? 0 : input
+  catch /^Vim:Interrupt$/
+    let input = -1
+  finally
+    bwipeout!
+    redraw!
+    return input
+  endtry
 endfunction
 
 " Initialize
