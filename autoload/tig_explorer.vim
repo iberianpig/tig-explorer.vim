@@ -193,7 +193,7 @@ endfunction
 " return 0 (<ESC>) or -1 (<Ctrl-c>)
 function! s:input(...) abort
   new
-  cnoremap <buffer> <Esc> __CANCELED__<CR>
+  cnoremap <buffer> <silent> <Esc> __CANCELED__<CR>
   try
     let input = call('input', a:000)
     let input = input =~# '__CANCELED__$' ? 0 : input
