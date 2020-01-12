@@ -130,6 +130,25 @@ function! s:initialize() abort
   let s:tig_prefix = 'TIGRC_USER=' . s:tmp_tigrc . ' '
 endfunction
 
+function! s:tig_callback(exit_code) abort
+  if a:exit_code == 0
+    if has('nvim')
+      silent! Bclose!
+    else
+      let current_buf = bufnr('%')
+      silent! buffer #
+      " NOTE: Prevent to quit vim
+      if winnr('$') == 1 && bufnr('%') ==# current_buf
+        enew
+      endif
+    endif
+  endif
+
+  try
+    call s:open_file()
+  endtry
+endfunction
+
 function! s:exec_tig_command(tig_args) abort
   if !s:tig_available()
     return
@@ -149,18 +168,19 @@ function! s:exec_tig_command(tig_args) abort
   let command = s:tig_prefix  . 'tig' . ' ' . a:tig_args
   exec 'silent !' . s:before_exec_tig
   if has('nvim')
-    let tigCallback = { 'name': 'tig' }
-    function! tigCallback.on_exit(job_id, code, event)
-      if a:code == 0
-        silent! Bclose!
-      endif
-      try
-        call s:open_file()
-      endtry
-    endfunction
     enew
-    call termopen(command, tigCallback)
+    call termopen(command, {
+          \ 'name': 'tig',
+          \ 'on_exit': {job_id, code, event -> s:tig_callback(code)},
+          \ })
     startinsert
+  elseif has('terminal')
+    call term_start('env ' . command, {
+         \ 'term_name': 'tig',
+         \ 'curwin': v:true,
+         \ 'term_finish': 'close',
+         \ 'exit_cb': {status, code -> s:tig_callback(code)},
+         \ })
   else
     exec 'silent !' . command
     call s:open_file()
