@@ -32,5 +32,8 @@ command! TigBlame
 command! TigGrepResume
       \  call tig_explorer#grep_resume()
 
+command! TigStatus
+      \  call tig_explorer#status()
+
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
