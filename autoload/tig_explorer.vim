@@ -14,7 +14,7 @@ let g:loaded_tig_explorer = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-" Public 
+" Public
 
 function! tig_explorer#open(str) abort
   :call s:exec_tig_command(a:str)
@@ -70,9 +70,12 @@ function! tig_explorer#blame() abort
   call s:exec_tig_command('blame +' . line('.') . ' ' . expand('%:p'))
 endfunction
 
+function! tig_explorer#status() abort
+  call s:exec_tig_command('status')
+endfunction
 
 
-" Private 
+" Private
 
 function! s:tig_available() abort
   if !executable('tig')
