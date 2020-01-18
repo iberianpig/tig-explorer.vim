@@ -191,12 +191,20 @@ function! s:exec_tig_command(tig_args) abort
 endfunction
 
 function! s:open_file() abort
-  if filereadable(s:path_file)
+  if !filereadable(s:path_file)
+    return
+  endif
+
+  let current_dir = getcwd()
+  try
+    execute 'lcd ' . fnamemodify(s:project_root_dir(), ':p')
     for f in readfile(s:path_file)
       exec f
     endfor
+  finally
     call delete(s:path_file)
-  endif
+    execute 'lcd ' . fnamemodify(current_dir, ':p')
+  endtry
 endfunction
 
 function! s:project_root_dir() abort
