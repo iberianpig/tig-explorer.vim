@@ -51,14 +51,18 @@ function! tig_explorer#grep(str) abort
 
   let g:tig_explorer_last_grep_keyword = word
 
-  let args = s:shellwords(word)
-  let escaped_word = ''
+  " NOTE: Escape shellwords
+  if !has('terminal')
+    let args = s:shellwords(word)
+    let escaped_word = ''
 
-  for arg in args
-    let escaped_word = join([escaped_word, shellescape(arg, 1)], ' ')
-  endfor
+    for arg in args
+      let escaped_word = join([escaped_word, shellescape(arg, 1)], ' ')
+    endfor
+    let word = escaped_word
+  endif
 
-  :call s:exec_tig_command('grep ' . escaped_word)
+  :call s:exec_tig_command('grep ' . word)
 endfunction
 
 function! tig_explorer#grep_resume() abort
