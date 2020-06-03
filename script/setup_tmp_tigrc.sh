@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ $# -ne 7 ]; then
   echo "require 7 argument"
@@ -19,7 +19,7 @@ cp "$orig_tigrc" "$tmp_tigrc"
 
 # $1: 'keymap'
 # $2: 'edit_cmd'
-function add_custom_command() {
+add_custom_command() {
   echo "bind generic $1 <sh -c \"echo $2 +%(lineno) %(file) > $path_file\"" >> "$tmp_tigrc"
 }
 
