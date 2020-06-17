@@ -60,7 +60,8 @@ TigOpenProjectRootDir                                 *:TigOpenProjectRootDir*
 
 TigGrep                                                             *:TigGrep*
     Open tig grep.
-    And you can pass fraze like `:TigGrep (fraze)` to open with the fraze.
+    And you can pass PATTERN like `:TigGrep (PATTERN)` to grep
+    with the PATTERN.
 
 TigGrepResume                                                 *:TigGrepResume*
     Resume from last grep
