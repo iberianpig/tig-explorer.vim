@@ -1,0 +1,14 @@
+:TigBlame	tig-explorer.txt	/*:TigBlame*
+:TigGrep	tig-explorer.txt	/*:TigGrep*
+:TigGrepResume	tig-explorer.txt	/*:TigGrepResume*
+:TigOpenCurrentFile	tig-explorer.txt	/*:TigOpenCurrentFile*
+:TigOpenProjectRootDir	tig-explorer.txt	/*:TigOpenProjectRootDir*
+tig-explorer-commands	tig-explorer.txt	/*tig-explorer-commands*
+tig-explorer-contents	tig-explorer.txt	/*tig-explorer-contents*
+tig-explorer-customize	tig-explorer.txt	/*tig-explorer-customize*
+tig-explorer-install	tig-explorer.txt	/*tig-explorer-install*
+tig-explorer-introduction	tig-explorer.txt	/*tig-explorer-introduction*
+tig-explorer-keymaps	tig-explorer.txt	/*tig-explorer-keymaps*
+tig-explorer-requirements	tig-explorer.txt	/*tig-explorer-requirements*
+tig-explorer-support	tig-explorer.txt	/*tig-explorer-support*
+tig-explorer.txt	tig-explorer.txt	/*tig-explorer.txt*
