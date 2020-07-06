@@ -115,6 +115,12 @@ And you can add following script to ~/.vimrc
     " open tig blame with current file
     nnoremap <Leader>b :TigBlame<CR>
 <
+By default tig-explorer will use the build terminal if available.
+To force launching tig-explorer as shell command you can add the following to
+~/.vimrc
+
+    " don't use builtin terminal
+    let g:tig_explorer_use_builtin_term=0
 
 ==============================================================================
 SUPPORT                                                 *tig-explorer-support*
