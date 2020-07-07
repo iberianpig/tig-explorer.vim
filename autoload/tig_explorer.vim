@@ -52,7 +52,7 @@ function! tig_explorer#grep(str) abort
   let g:tig_explorer_last_grep_keyword = word
 
   " NOTE: Escape shellwords
-  if !has('terminal')
+  if !get(g:, 'tig_explorer_use_builtin_term', has('terminal'))
     let args = s:shellwords(word)
     let escaped_word = ''
 
@@ -178,7 +178,7 @@ function! s:exec_tig_command(tig_args) abort
           \ 'on_exit': {job_id, code, event -> s:tig_callback(code)},
           \ })
     startinsert
-  elseif has('terminal')
+  elseif get(g:, 'tig_explorer_use_builtin_term', has('terminal'))
     call term_start('env ' . command, {
          \ 'term_name': 'tig',
          \ 'curwin': v:true,
