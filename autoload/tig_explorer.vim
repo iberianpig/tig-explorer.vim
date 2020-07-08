@@ -17,7 +17,7 @@ set cpoptions&vim
 " Public
 
 function! tig_explorer#open(str) abort
-  :call s:exec_tig_command(a:str)
+  :call s:exec_tig_command(s:strip_commit(a:str))
 endfunction
 
 function! tig_explorer#open_current_file() abort
@@ -71,12 +71,72 @@ function! tig_explorer#grep_resume() abort
 endfunction
 
 function! tig_explorer#blame() abort
-  call s:exec_tig_command('blame +' . line('.') . ' ' . expand('%:p'))
+  " extract the current commit if a path as the shape commit:file
+  " which happend when using TigOpenWithCommit
+  let parts = split(expand('%:p'), ':')
+  if len(parts) == 2
+    let commit = parts[0]
+    let file = parts[1]
+    call s:exec_tig_command('blame ' . commit .' +' . line('.') . ' -- '. file)
+  else
+    call s:exec_tig_command('blame +' . line('.') . ' ' . parts[0])
+  endif
 endfunction
 
 function! tig_explorer#status() abort
   call s:exec_tig_command('status')
 endfunction
+
+" Open a file for the given commit
+" Usefull when editing file from tree or blame view
+function tig_explorer#open_file_with_commit(diff, mods, commit='HEAD', file='', lineno=0)
+  " if no file is provided use the current one
+  if a:file == ''
+    let file0 = expand('%')
+    let diff = 1
+  else
+    let file0 = expand(a:file)
+  endif
+  " split commit file if needed
+  let parts = split(file0, ':')
+  if len(parts) == 2
+    let commit = substitute(a:commit, '%',  parts[0],'' )
+    let file = parts[1]
+  else
+    let file = parts[0]
+    let commit = substitute(a:commit, '%', 'HEAD','')
+  endif
+  if a:diff == '!'
+    diffthis
+  endif
+  let ref = commit.":".file
+  echomsg ref
+  if bufexists(ref)
+    if a:diff == '!'
+      execute a:mods "edit" ref
+      diffthis
+    else
+      execute a:mods "split" ref
+    endif
+
+  else
+    let ftype=&filetype
+    if a:diff == '!'
+      execute a:mods "new"
+      diffthis
+    else
+      execute a:mods "enew"
+    endif
+    execute "file" ref
+    execute "r !git show ".ref
+    let &filetype=ftype
+    setlocal nomodified
+    setlocal nomodifiable
+    setlocal readonly
+    execute "+" a:lineno
+  endif
+endfunction
+
 
 
 " Private
@@ -254,6 +314,9 @@ function! s:input(...) abort
   endtry
 endfunction
 
+function s:strip_commit(path)
+  return substitute(a:path, '^[^:]*:','','')
+endfunction
 " Initialize
 
 " NOTE: '<sfile>' must be called top level
@@ -263,3 +326,5 @@ call s:initialize()
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
+
+

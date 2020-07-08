@@ -47,6 +47,9 @@ e, <Ctrl-o>: edit on existing tab
 <Ctrl-s>   : edit with split window
 ```
 
+When a commit is available (in main, blame, tree, refs view) view, the version of the file corresponding to this commit
+will be open instead of the version in the working directory. Split versions will open the two buffer in diff mode.
+
 ##### Customize Keymap on Tig
 Following keymap is defined as defaut
 ```vim
