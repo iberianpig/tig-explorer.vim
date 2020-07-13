@@ -21,6 +21,18 @@ cp "$orig_tigrc" "$tmp_tigrc"
 # $2: 'edit_cmd'
 add_custom_command() {
   echo "bind generic $1 <sh -c \"echo $2 +%(lineno) %(file) > $path_file\"" >> "$tmp_tigrc"
+  case $2 in
+    tabedit) command="tab TigOpenFileWithCommit";;  
+    split) command="TigOpenFileWithCommit!";; 
+    vsplit) command="vertical TigOpenFileWithCommit!";; 
+    *) command="TigOpenFileWithCommit";; 
+  esac
+
+  echo "bind tree $1 <sh -c \"echo $command %(commit) %(file) %(lineno) > $path_file\"" >> "$tmp_tigrc"
+  for keymap in blame refs main diff
+  do
+    echo "bind $keymap $1 <sh -c \"echo $command %(commit) % %(lineno) > $path_file\"" >> "$tmp_tigrc"
+  done
 }
 
 add_custom_command "e"               "edit"
