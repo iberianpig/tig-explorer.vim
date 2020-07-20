@@ -73,7 +73,7 @@ endfunction
 function! tig_explorer#blame() abort
   " extract the current commit if a path as the shape commit:file
   " which happend when using TigOpenWithCommit
-  let parts = split(expand('%:p'), ':')
+  let parts = split(expand('%'), ':')
   if len(parts) == 2
     let commit = parts[0]
     let file = parts[1]
@@ -279,7 +279,7 @@ function! s:project_root_dir() abort
   endif
 
   if git_dir ==# ''
-    throw 'Not a git repository'
+    throw 'Not a git repository: ' . expand('%:p:h')
   endif
 
   let root_dir = fnamemodify(git_dir, ':h')
