@@ -89,22 +89,28 @@ endfunction
 
 " Open a file for the given commit
 " Usefull when editing file from tree or blame view
-function tig_explorer#open_file_with_commit(diff, mods, commit='HEAD', file='', lineno=0)
+function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
+  let commit = get(a:, 'commit', 'HEAD')
+  let file = get(a:, 'file', '')
+  let lineno = get(a:, 'lineno', 0)
+
+  let file0 = ''
   " if no file is provided use the current one
-  if a:file == ''
+  if file == ''
     let file0 = expand('%')
     let diff = 1
   else
-    let file0 = expand(a:file)
+    let file0 = expand(file)
   endif
   " split commit file if needed
+  echomsg file0
   let parts = split(file0, ':')
   if len(parts) == 2
-    let commit = substitute(a:commit, '%',  parts[0],'' )
+    let commit = substitute(commit, '%',  parts[0],'' )
     let file = parts[1]
   else
     let file = parts[0]
-    let commit = substitute(a:commit, '%', 'HEAD','')
+    let commit = substitute(commit, '%', 'HEAD','')
   endif
   if a:diff == '!'
     diffthis
@@ -114,16 +120,13 @@ function tig_explorer#open_file_with_commit(diff, mods, commit='HEAD', file='', 
   if bufexists(ref)
     if a:diff == '!'
       execute a:mods "edit" ref
-      diffthis
     else
       execute a:mods "split" ref
     endif
-
   else
     let ftype=&filetype
     if a:diff == '!'
       execute a:mods "new"
-      diffthis
     else
       execute a:mods "enew"
     endif
@@ -133,7 +136,10 @@ function tig_explorer#open_file_with_commit(diff, mods, commit='HEAD', file='', 
     setlocal nomodified
     setlocal nomodifiable
     setlocal readonly
-    execute "+" a:lineno
+    execute "+" lineno
+  endif
+  if a:diff=='!'
+    diffthis
   endif
 endfunction
 
@@ -314,7 +320,7 @@ function! s:input(...) abort
   endtry
 endfunction
 
-function s:strip_commit(path)
+function! s:strip_commit(path)
   return substitute(a:path, '^[^:]*:','','')
 endfunction
 " Initialize
