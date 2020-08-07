@@ -94,6 +94,7 @@ function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
   let file = get(a:, 'file', '')
   let lineno = get(a:, 'lineno', 0)
 
+  let file0 = ''
   " if no file is provided use the current one
   if file == ''
     let file0 = expand('%')
@@ -119,16 +120,13 @@ function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
   if bufexists(ref)
     if a:diff == '!'
       execute a:mods "edit" ref
-      diffthis
     else
       execute a:mods "split" ref
     endif
-
   else
     let ftype=&filetype
     if a:diff == '!'
       execute a:mods "new"
-      diffthis
     else
       execute a:mods "enew"
     endif
@@ -139,9 +137,9 @@ function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
     setlocal nomodifiable
     setlocal readonly
     execute "+" lineno
-    if a:diff=='!'
-      diffthis
-    endif
+  endif
+  if a:diff=='!'
+    diffthis
   endif
 endfunction
 
