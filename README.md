@@ -88,7 +88,7 @@ nnoremap <Leader>b :TigBlame<CR>
 
 ### Other options
 
-By default tig-explorer will use the build terminal if available.
+By default tig-explorer will use the builtin terminal if available.
 To force launching tig-explorer as shell command you can add the following to
 ~/.vimrc
 
