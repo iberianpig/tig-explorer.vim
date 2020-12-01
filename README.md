@@ -52,16 +52,24 @@ e, <Ctrl-o>: edit on existing tab
 <ESC> s: open with commit with split window
 ```
 
-When a commit is available (in main, blame, tree, refs view) view, the version of the file corresponding to this commit
-will be open instead of the version in the working directory. Split versions will open the two buffer in diff mode.
+When a commit is available (in main, blame, tree, refs view) view, the version
+of the file corresponding to this commit will be open instead of the version
+in the working directory. Split versions will open the two buffer in diff mode.
 
 #### Customize Keymap on Tig
+
 Following keymap is defined as defaut
+
 ```vim
 let g:tig_explorer_keymap_edit    = '<C-o>'
 let g:tig_explorer_keymap_tabedit = '<C-t>'
 let g:tig_explorer_keymap_split   = '<C-s>'
 let g:tig_explorer_keymap_vsplit  = '<C-v>'
+
+let g:tig_explorer_keymap_commit_edit    = '<ESC>o'
+let g:tig_explorer_keymap_commit_tabedit = '<ESC>t'
+let g:tig_explorer_keymap_commit_split   = '<ESC>s'
+let g:tig_explorer_keymap_commit_vsplit  = '<ESC>v'
 ```
 
 ### Keymap on Vim
