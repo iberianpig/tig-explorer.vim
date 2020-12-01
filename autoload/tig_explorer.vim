@@ -187,6 +187,11 @@ function! s:initialize() abort
   let s:keymap_split   = get(g:, 'tig_explorer_keymap_split',   '<C-s>')
   let s:keymap_vsplit  = get(g:, 'tig_explorer_keymap_vsplit',  '<C-v>')
 
+  let s:keymap_commit_edit    = get(g:, 'tig_explorer_keymap_commit_edit',    '<ESC>o')
+  let s:keymap_commit_tabedit = get(g:, 'tig_explorer_keymap_commit_tabedit', '<ESC>t')
+  let s:keymap_commit_split   = get(g:, 'tig_explorer_keymap_commit_split',   '<ESC>s')
+  let s:keymap_commit_vsplit  = get(g:, 'tig_explorer_keymap_commit_vsplit',  '<ESC>v')
+
 
   let s:before_exec_tig  = s:plugin_root . '/script/setup_tmp_tigrc.sh'
         \ . ' ' . s:orig_tigrc
@@ -196,6 +201,10 @@ function! s:initialize() abort
         \ . ' "' . s:keymap_tabedit . '"'
         \ . ' "' . s:keymap_split   . '"'
         \ . ' "' . s:keymap_vsplit  . '"'
+        \ . ' "' . s:keymap_commit_edit    . '"'
+        \ . ' "' . s:keymap_commit_tabedit . '"'
+        \ . ' "' . s:keymap_commit_split   . '"'
+        \ . ' "' . s:keymap_commit_vsplit  . '"'
 
   let s:tig_prefix = 'TIGRC_USER=' . s:tmp_tigrc . ' '
 endfunction
