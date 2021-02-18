@@ -61,6 +61,7 @@ in the working directory. Split versions will open the two buffer in diff mode.
 Following keymap is defined as defaut
 
 ```vim
+let g:tig_explorer_keymap_edit_e  = 'e'
 let g:tig_explorer_keymap_edit    = '<C-o>'
 let g:tig_explorer_keymap_tabedit = '<C-t>'
 let g:tig_explorer_keymap_split   = '<C-s>'
