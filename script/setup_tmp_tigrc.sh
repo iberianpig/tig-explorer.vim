@@ -13,9 +13,9 @@ keymap_tabedit=$6
 keymap_split=$7
 keymap_vsplit=$8
 keymap_commit_edit=$9
-keymap_commit_tabedit=$10
-keymap_commit_split=$11
-keymap_commit_vsplit=$12
+keymap_commit_tabedit=${10}
+keymap_commit_split=${11}
+keymap_commit_vsplit=${12}
 
 # make temporary tigrc
 cp "$orig_tigrc" "$tmp_tigrc"
