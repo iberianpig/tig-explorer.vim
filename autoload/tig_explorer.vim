@@ -79,7 +79,9 @@ function! tig_explorer#blame() abort
     let file = parts[1]
     call s:exec_tig_command('blame ' . commit .' +' . line('.') . ' -- '. file)
   else
-    call s:exec_tig_command('blame +' . line('.') . ' ' . parts[0])
+    let root_dir = fnamemodify(s:project_root_dir(), ':p')
+    let file = substitute(expand('%:p'), root_dir, "./", "")
+    call s:exec_tig_command('blame +' . line('.') . ' ' . file)
   endif
 endfunction
 
