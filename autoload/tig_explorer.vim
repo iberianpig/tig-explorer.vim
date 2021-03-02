@@ -27,12 +27,13 @@ endfunction
 
 function! tig_explorer#open_project_root_dir() abort
   try
-    let root_dir = s:project_root_dir()
+    let root_dir = fnamemodify(s:project_root_dir(), ':p')
+    let short_path = substitute(expand('%:p'), root_dir, "./", "")
   catch
     echoerr 'tig-explorer.vim: ' . v:exception
     return
   endtry
-  :call tig_explorer#open(root_dir)
+  :call tig_explorer#open(short_path)
 endfunction
 
 function! tig_explorer#grep(str) abort
