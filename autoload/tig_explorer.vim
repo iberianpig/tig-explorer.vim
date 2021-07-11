@@ -247,6 +247,10 @@ function! s:exec_tig_command(tig_args) abort
   " NOTE: It MUST execute tig command from project root
   " TigBlame or Edit are broken if execute from a relative path
   execute 'lcd ' . fnamemodify(root_dir, ':p')
+  if !filewritable(root_dir . '/.git')
+    echoerr(".git is not writable")
+    return
+  endif
 
   let command = s:tig_prefix  . 'tig' . ' ' . a:tig_args
   exec 'silent !' . s:before_exec_tig
