@@ -265,6 +265,8 @@ function! s:exec_tig_command(tig_args) abort
     call term_start('env ' . command, {
          \ 'term_name': 'tig',
          \ 'curwin': v:true,
+         \ 'term_rows' : winheight('%'),
+         \ 'term_cols' : winwidth('%'),
          \ 'term_finish': 'close',
          \ 'exit_cb': {status, code -> s:tig_callback(code)},
          \ })
