@@ -93,19 +93,11 @@ endfunction
 " Usefull when editing file from tree or blame view
 function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
   let commit = a:commit ?? 'HEAD'
-  let file = a:file
+  let file = a:file ?? '%'
   let lineno = a:lineno ?? 0
 
-  let file0 = ''
-  " if no file is provided use the current one
-  if file == ''
-    let file0 = expand('%')
-    let diff = 1
-  else
-    let file0 = expand(file)
-  endif
+  let file0 =  expand(file)
   " split commit file if needed
-  echomsg file0
   let parts = split(file0, ':')
   if len(parts) == 2
     let commit = substitute(commit, '%',  parts[0],'' )
@@ -117,8 +109,10 @@ function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
   if a:diff == '!'
     diffthis
   endif
+  if file !~ '^\./'
+    let file = './'.file
+  endif
   let ref = commit.":".file
-  echomsg ref
   if bufexists(ref)
     if a:diff == '!'
       execute a:mods "edit" ref
