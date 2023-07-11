@@ -261,7 +261,7 @@ function! s:exec_tig_command(tig_args) abort
           \ 'on_exit': {job_id, code, event -> s:tig_callback(code)},
           \ })
     startinsert
-  elseif get(g:, 'tig_explorer_use_builtin_term', has('terminal'))
+  elseif has('gui_running') && has('terminal') || get(g:, 'tig_explorer_use_builtin_term', has('terminal'))
     call term_start('env ' . command, {
          \ 'term_name': 'tig',
          \ 'curwin': v:true,
