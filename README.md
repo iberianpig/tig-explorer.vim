@@ -2,8 +2,8 @@
 
 Vim plugin to use [Tig](https://github.com/jonas/tig) as a git client.
 * Seamless switching between Vim and Tig
-* Adding buffer in the same process not a child of Tig process.
-* Open files in tabs or in vertically / horizontal split windows on Vim from Tig
+* Adding buffer in the same process, not a child of Tig process.
+* Open files in tabs or vertically / horizontal split windows on Vim from Tig
 * Dynamically defining keymaps on Tig
 * Support Vim8 / NeoVim terminal
 * Open diff-mode side by side at the selected commit from Tig
@@ -39,7 +39,7 @@ NeoBundle 'rbgrouleff/bclose.vim'
 
 ### Keymap on Tig
 
-Following commands are available on tig launched from tig-explorer
+Following commands are available on Tig launched from tig-explorer.
 ```
 e, <Ctrl-o>: edit on existing tab
 <Ctrl-t>   : edit on new tab
@@ -52,13 +52,13 @@ e, <Ctrl-o>: edit on existing tab
 <ESC> s: open with commit with split window
 ```
 
-When a commit is available (in main, blame, tree, refs view) view, the version
-of the file corresponding to this commit will be open instead of the version
-in the working directory. Split versions will open the two buffer in diff mode.
+Keymaps are available in the main, blame, tree, and refs views.
+When opened with the commit, it opens in read-only mode.
+When opening with commit with split or vsplit, it will open with diffsplit.
 
 #### Customize Keymap on Tig
 
-Following keymap is defined as defaut
+tig-explorer.vim defines the following keymap by default
 
 ```vim
 let g:tig_explorer_keymap_edit_e  = 'e'
