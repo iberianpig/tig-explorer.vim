@@ -92,9 +92,9 @@ endfunction
 " Open a file for the given commit
 " Usefull when editing file from tree or blame view
 function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
-  let commit = get(a:, 'commit', 'HEAD')
-  let file = get(a:, 'file', '')
-  let lineno = get(a:, 'lineno', 0)
+  let commit = a:commit ?? 'HEAD'
+  let file = a:file
+  let lineno = a:lineno ?? 0
 
   let file0 = ''
   " if no file is provided use the current one
