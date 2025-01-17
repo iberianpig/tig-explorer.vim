@@ -112,7 +112,3 @@ let g:tig_explorer_use_builtin_term=0
 ```
 
 On Gvim, it is available only built-in terminal. 
-
-## Support
-
-[![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/iberianpig)
