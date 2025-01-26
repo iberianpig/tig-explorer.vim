@@ -356,7 +356,10 @@ function! s:input(...) abort
   cnoremap <buffer> <silent> <Esc> __CANCELED__<CR>
   try
     let input = call('input', a:000)
-    let input = input =~# '__CANCELED__$' ? 0 : input
+    if input =~ '__CANCELED__'
+      call histdel('input', -1)
+      let input = 0
+    endif
   catch /^Vim:Interrupt$/
     let input = -1
   finally
