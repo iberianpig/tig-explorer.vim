@@ -16,8 +16,10 @@ set cpoptions&vim
 
 " Public
 
-function! tig_explorer#open(str) abort
-  :call s:exec_tig_command(s:strip_commit(a:str))
+function! tig_explorer#open(str, ...) abort
+  let args = a:0 ? join(a:, ' ') : ''
+  let command = s:strip_commit(a:str) . ' ' . args
+  call s:exec_tig_command(command)
 endfunction
 
 function! tig_explorer#open_current_file() abort
