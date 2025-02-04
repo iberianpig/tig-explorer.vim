@@ -119,7 +119,7 @@ function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
   if a:diff == '!'
     diffthis
   endif
-  let ref = commit.":".file
+  let ref = commit . ":" . file
   echomsg ref
   if bufexists(ref)
     if a:diff == '!'
@@ -128,21 +128,22 @@ function! tig_explorer#open_file_with_commit(diff, mods, commit, file, lineno)
       execute a:mods "split" ref
     endif
   else
-    let ftype=&filetype
+    let ftype = &filetype
     if a:diff == '!'
       execute a:mods "new"
     else
       execute a:mods "enew"
     endif
     execute "file" ref
-    execute "r !git show ".ref
-    let &filetype=ftype
+    let git_output = system('git show ' . ref)
+    call setbufline(bufnr('%'), 1, split(git_output, '\n'))
+    let &filetype = ftype
     setlocal nomodified
     setlocal nomodifiable
     setlocal readonly
     execute "+" lineno
   endif
-  if a:diff=='!'
+  if a:diff == '!'
     diffthis
   endif
 endfunction
