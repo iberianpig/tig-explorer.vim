@@ -309,32 +309,31 @@ function! s:project_root_dir() abort
       throw 'Not a git repository: ' . l:current_file_dir
     endif
 
+    " git submodule
     let l:git_module_dir = finddir('modules', l:current_file_dir . ';')
     if l:git_module_dir !=# ''
       let l:git_module_dir_git = finddir('.git', fnamemodify(l:git_module_dir, ':p') . ';')
       if fnamemodify(l:git_module_dir_git, ':p') ==# fnamemodify(l:git_dir, ':p')
-        " Now in submodule's config dir
-
         let l:git_submodule_index = findfile('index', l:current_file_dir . ';')
         if l:git_submodule_index !=# ''
           let l:git_submodule_dir = fnamemodify(l:git_submodule_index, ':p:h')
-          let l:git_submodule_workdir = trim(system('cd ' . l:git_submodule_dir . '&& git config --get core.worktree'))
+          let l:git_submodule_workdir = trim(system('cd ' . shellescape(l:git_submodule_dir) . ' && git config --get core.worktree'))
           if l:git_submodule_workdir !=# ''
             let l:git_submodule_workdir = glob(l:git_submodule_dir . '/' . l:git_submodule_workdir)
+            if isdirectory(l:git_submodule_workdir)
+              return l:git_submodule_workdir
+            endif
           endif
         endif
       endif
     endif
   endif
 
-  if exists("l:git_submodule_workdir") && l:git_submodule_workdir !=# ''
-    let l:root_dir = l:git_submodule_workdir
+  " git repository
+  if isdirectory(l:git_dir)
+    let l:root_dir = fnamemodify(l:git_dir, ':p:h:h')
   else
-    if isdirectory(l:git_dir)
-      let l:root_dir = fnamemodify(l:git_dir, ':p:h:h')
-    else
-      let l:root_dir = fnamemodify(l:git_dir, ':p:h')
-    endif
+    let l:root_dir = fnamemodify(l:git_dir, ':p:h')
   endif
 
   if !isdirectory(l:root_dir)
