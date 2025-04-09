@@ -300,49 +300,47 @@ function! s:open_file() abort
 endfunction
 
 function! s:project_root_dir() abort
-  let current_file_dir = expand('%:p:h')
-  let git_dir = findfile('.git', current_file_dir . ';')
-  if git_dir ==# ''
-    let git_dir = finddir('.git', current_file_dir . ';')
+  let l:current_file_dir = expand('%:p:h')
+  let l:git_dir = findfile('.git', l:current_file_dir . ';')
+  if l:git_dir ==# ''
+    let l:git_dir = finddir('.git', l:current_file_dir . ';')
 
-    if git_dir ==# ''
-      throw 'Not a git repository: ' . current_file_dir
+    if l:git_dir ==# ''
+      throw 'Not a git repository: ' . l:current_file_dir
     endif
 
-    let git_module_dir = finddir('modules', current_file_dir . ';')
-    if git_module_dir !=# ''
-      let git_module_dir_git = finddir('.git', fnamemodify(git_module_dir, ':p') . ';')
-      if fnamemodify(git_module_dir_git, ':p') ==# fnamemodify(git_dir, ':p')
+    let l:git_module_dir = finddir('modules', l:current_file_dir . ';')
+    if l:git_module_dir !=# ''
+      let l:git_module_dir_git = finddir('.git', fnamemodify(l:git_module_dir, ':p') . ';')
+      if fnamemodify(l:git_module_dir_git, ':p') ==# fnamemodify(l:git_dir, ':p')
         " Now in submodule's config dir
 
-        let git_submodule_index = findfile('index', current_file_dir . ';')
-        if git_submodule_index !=# ''
-          let git_submodule_dir = fnamemodify(git_submodule_index, ':p:h')
-          let git_submodule_workdir = trim(system('cd ' . git_submodule_dir . '&& git config --get core.worktree'))
-          if git_submodule_workdir !=# ''
-            let git_submodule_workdir = glob(git_submodule_dir . '/' . git_submodule_workdir)
+        let l:git_submodule_index = findfile('index', l:current_file_dir . ';')
+        if l:git_submodule_index !=# ''
+          let l:git_submodule_dir = fnamemodify(l:git_submodule_index, ':p:h')
+          let l:git_submodule_workdir = trim(system('cd ' . l:git_submodule_dir . '&& git config --get core.worktree'))
+          if l:git_submodule_workdir !=# ''
+            let l:git_submodule_workdir = glob(l:git_submodule_dir . '/' . l:git_submodule_workdir)
           endif
         endif
       endif
     endif
   endif
 
-  if exists("git_submodule_workdir") && git_submodule_workdir !=# ''
-    let root_dir = git_submodule_workdir
+  if exists("l:git_submodule_workdir") && l:git_submodule_workdir !=# ''
+    let l:root_dir = l:git_submodule_workdir
   else
-    if isdirectory(git_dir)
-      " XXX:  `:p` fullpath-conversion attaches `/` in the tail of dir path, e.g. `dir/.git/` .
-      "       Due to this, give one more `:h` modifier to remove the last part or `.git` .
-      let root_dir = fnamemodify(git_dir, ':p:h:h')
+    if isdirectory(l:git_dir)
+      let l:root_dir = fnamemodify(l:git_dir, ':p:h:h')
     else
-      let root_dir = fnamemodify(git_dir, ':p:h')
+      let l:root_dir = fnamemodify(l:git_dir, ':p:h')
     endif
   endif
 
-  if !isdirectory(root_dir)
-    return current_file_dir
+  if !isdirectory(l:root_dir)
+    return l:current_file_dir
   endif
-  return root_dir
+  return l:root_dir
 endfunction
 
 function! s:shellwords(str) abort "make list by splitting the string by whitespace
