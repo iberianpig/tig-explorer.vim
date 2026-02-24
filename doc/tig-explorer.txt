@@ -154,9 +154,4 @@ To force launching tig-explorer as shell command you can add the following to
     let g:tig_explorer_use_builtin_term=0
 <
 
-==============================================================================
-SUPPORT                                                 *tig-explorer-support*
-
-https://www.patreon.com/iberianpig
-
 vim:textwidth=78:tabstop=4:shiftwidth=4:expandtab:filetype=help:norl:
