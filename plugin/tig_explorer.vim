@@ -36,7 +36,8 @@ command! TigStatus
       \  call tig_explorer#status()
 
 command! -bang -nargs=* TigOpenFileWithCommit
-      \ call tig_explorer#open_file_with_commit("<bang>",<q-mods>,<f-args>)
+      \ call call('tig_explorer#open_file_with_commit',
+      \            slice(["<bang>",<q-mods>,<f-args>]+['','',''],0,5))
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
