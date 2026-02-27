@@ -219,7 +219,7 @@ endfunction
 function! s:tig_callback(exit_code) abort
   if a:exit_code == 0
     if has('nvim')
-      silent! Bclose!
+      silent! Bclose
     else
       let current_buf = bufnr('%')
       silent! buffer #
